@@ -27,6 +27,7 @@ namespace TimesheetAssistant
             tlpMain.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tlpMain.AutoSize = true;
             lblEntry.Height = tlpMain.Height - Calendar.Height;
+            Calendar.SetSelectionRange(Calendar.MinDate, Calendar.MinDate);
             Calendar.SetSelectionRange(DateTime.Today, DateTime.Today);
         }
 
@@ -49,10 +50,10 @@ namespace TimesheetAssistant
                 }
             }
 
-            lblEntry.Text = "Time spent:\n";
+            lblEntry.Text = "Time spent:\r\n";
             foreach (KeyValuePair<String, uint> pair in projectTimes)
             {
-                lblEntry.Text += $"  {pair.Key.Substring(0, pair.Key.IndexOf(';'))}: {TimeSpan.FromMinutes(pair.Value).ToString()}\n";
+                lblEntry.Text += $"\t{pair.Key.Substring(0, pair.Key.IndexOf(';'))}: {TimeSpan.FromMinutes(pair.Value).ToString().Remove(4, 3)}\r\n";
             }
 
             Dictionary<string, Dictionary<TimeSpan, string>> logList = new Dictionary<string, Dictionary<TimeSpan, string>>();
@@ -69,13 +70,13 @@ namespace TimesheetAssistant
                 }
             }
 
-            lblEntry.Text += "\nLogs:\n";
+            lblEntry.Text += "\r\nLogs:\r\n";
             foreach (KeyValuePair<string, Dictionary<TimeSpan, string>> logPair in logList)
             {
-                lblEntry.Text += $"  {logPair.Key}:\n";
+                lblEntry.Text += $"\t{logPair.Key}:\r\n";
                 foreach (KeyValuePair<TimeSpan, string> log in logPair.Value)
                 {
-                    lblEntry.Text += $"    {log.Key}: {log.Value}\n";
+                    lblEntry.Text += $"\t\t{log.Key.ToString().Remove(4,3)}: {log.Value}\r\n";
                 }
             }
         }

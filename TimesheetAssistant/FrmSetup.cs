@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Drawing;
+using System.Speech.Recognition;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TimesheetAssistant
@@ -39,6 +42,7 @@ namespace TimesheetAssistant
 
         private void BtnDelProjects_Click(object sender, EventArgs e)
         {
+            Settings.Reload();
             uint numProjects = Settings.NumProjects;
             
             string projName = Prompt.ShowDialog("Project Name?", "Remove Project", Settings.Projects.ToArray());
@@ -85,10 +89,27 @@ namespace TimesheetAssistant
                 StartPosition = FormStartPosition.CenterScreen
             };
             Label textLabel = new Label() { Left = 50, Top = 20, Text = text, AutoSize = true };
-            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 350 };
+            Button voice = new Button() { Left = 405, Top = 48, Width = 45, BackgroundImage = Image.FromFile("mic.png"), BackgroundImageLayout = ImageLayout.Zoom};
             Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
             confirmation.Click += (sender, e) => { prompt.Close(); };
+            voice.Click += (sender, e) =>
+            {
+                prompt.Enabled = false;
+                SpeechRecognitionEngine recog = new SpeechRecognitionEngine();
+                recog.LoadGrammar(new DictationGrammar());
+                recog.SetInputToDefaultAudioDevice();
+                RecognitionResult res = null;
+                while (res == null)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    res = Task.Run(() => recog.Recognize()).Result;
+                }
+                textBox.Text = char.ToUpper(res.Text[0]) + res.Text.Substring(1);
+                prompt.Enabled = true;
+            };
             prompt.Controls.Add(textBox);
+            prompt.Controls.Add(voice);
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabel);
             prompt.AcceptButton = confirmation;
@@ -109,10 +130,29 @@ namespace TimesheetAssistant
             AutoCompleteStringCollection acsc = new AutoCompleteStringCollection();
             acsc.AddRange(autoCompleteOptions);
             Label textLabel = new Label() { Left = 50, Top = 20, Text = text, AutoSize = true };
-            ComboBox project = new ComboBox() { Left = 50, Top = 50, Width = 400, AutoCompleteMode = AutoCompleteMode.SuggestAppend, AutoCompleteCustomSource = acsc, AutoCompleteSource = AutoCompleteSource.CustomSource };
+            ComboBox project = new ComboBox() { Left = 50, Top = 50, Width = 350, AutoCompleteMode = AutoCompleteMode.SuggestAppend, AutoCompleteCustomSource = acsc, AutoCompleteSource = AutoCompleteSource.CustomSource };
+            Button voice = new Button() { Left = 405, Top = 48, Width = 45, BackgroundImage = Image.FromFile("mic.png"), BackgroundImageLayout = ImageLayout.Zoom };
             Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
             confirmation.Click += (sender, e) => { prompt.Close(); };
+            voice.Click += (sender, e) =>
+            {
+                prompt.Enabled = false;
+                SpeechRecognitionEngine recog = new SpeechRecognitionEngine();
+                GrammarBuilder gb = new GrammarBuilder();
+                foreach (string entry in autoCompleteOptions) gb.Append(entry);
+                recog.LoadGrammar(new Grammar(gb));
+                recog.SetInputToDefaultAudioDevice();
+                RecognitionResult res = null;
+                while (res == null)
+                { 
+                    System.Media.SystemSounds.Beep.Play();
+                    res = Task.Run(() => recog.Recognize()).Result;
+                }
+                project.Text = res.Text;
+                prompt.Enabled = true;
+            };
             prompt.Controls.Add(project);
+            prompt.Controls.Add(voice);
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabel);
             prompt.AcceptButton = confirmation;

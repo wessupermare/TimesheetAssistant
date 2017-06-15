@@ -107,7 +107,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FrmSetup";
-            this.Text = "FrmSetup";
+            this.Text = "Settings";
             this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

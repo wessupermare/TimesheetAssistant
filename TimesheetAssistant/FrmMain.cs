@@ -133,26 +133,68 @@ namespace TimesheetAssistant
         {
             Timer.Enabled = false;
             DateTime SessionEndTime = DateTime.Now;
+            Dictionary<string, List<TimeEntry>> tmpDic = Settings.TimeSpent;
+            List<TimeEntry> tmpList = null;
 
             try
             {
-                Settings.TimeSpent[$"{ActiveProject};{DateTime.Today.Date}"].Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) });
+                tmpList = tmpDic[$"{ActiveProject};{DateTime.Today.Date}"];
+                tmpList.Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) });
+                tmpDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpList;
+                Settings.TimeSpent = tmpDic;
             }
             catch
             {
-                Settings.TimeSpent.Add($"{ActiveProject};{DateTime.Today.Date}", new List<TimeEntry>());
-                Settings.TimeSpent[$"{ActiveProject};{DateTime.Today.Date}"].Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) });
+                try
+                {
+                    tmpList = new List<TimeEntry> { new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) } };
+                    tmpDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpList);
+                    Settings.TimeSpent = tmpDic;
+                }
+                catch
+                {
+                    Settings.TimeSpent = new Dictionary<string, List<TimeEntry>>
+                        {
+                            { $"{ActiveProject};{DateTime.Today.Date}", tmpList }
+                        };
+                }
             }
 
+            Dictionary<string, List<Log>> tmpLogDic = Settings.Logs;
+            List<Log> tmpLogList = null;
             try
             {
-                Settings.Logs[$"{ActiveProject};{DateTime.Today.Date}"].Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }));
+                tmpLogList = tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"];
+                tmpLogList.Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }));
+                tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpLogList;
+                Settings.Logs = tmpLogDic;
             }
             catch
             {
-                Settings.Logs.Add($"{ActiveProject};{DateTime.Today.Date}", new List<Log>());
-                Settings.Logs[$"{ActiveProject};{DateTime.Today.Date}"].Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }));
+                try
+                {
+                    tmpLogList = new List<Log> { new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }) };
+                    tmpLogDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpLogList);
+                    Settings.Logs = tmpLogDic;
+                }
+                catch
+                {
+                    Settings.Logs = new Dictionary<string, List<Log>>
+                        {
+                            { $"{ActiveProject};{DateTime.Today.Date}", new List<Log>
+                            {
+                                new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry
+                                {
+                                    StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0))
+                                }
+                                )
+                            }
+                            }
+                        };
+                }
             }
+            Settings.Save();
+            Settings.Reload();
 
             SessionStartTime = DateTime.Now;
             Timer.Enabled = true;

@@ -53,7 +53,7 @@ namespace TimesheetAssistant
         {
             Dictionary<string, List<TimeEntry>> retVal = new Dictionary<string, List<TimeEntry>>();
             string path = Application.LocalUserAppDataPath + "\\TimeEntries.TALog";
-            if (!File.Exists(path)) throw new FileNotFoundException();
+            if (!File.Exists(path)) return retVal;
 
             string[] timeStrings = File.ReadAllLines(path);
 
@@ -97,7 +97,7 @@ namespace TimesheetAssistant
         {
             Dictionary<string, List<Log>> retVal = new Dictionary<string, List<Log>>();
             string path = Application.LocalUserAppDataPath + "\\Logs.TALog";
-            if (!File.Exists(path)) throw new FileNotFoundException();
+            if (!File.Exists(path)) return retVal;
 
             string[] logStrings = File.ReadAllLines(path);
 

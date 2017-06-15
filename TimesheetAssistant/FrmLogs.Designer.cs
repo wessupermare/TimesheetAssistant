@@ -30,7 +30,7 @@
         {
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.Calendar = new System.Windows.Forms.MonthCalendar();
-            this.lblEntry = new System.Windows.Forms.Label();
+            this.lblEntry = new System.Windows.Forms.TextBox();
             this.tlpMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,12 +66,13 @@
             // lblEntry
             // 
             this.lblEntry.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblEntry.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblEntry.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.lblEntry.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblEntry.Location = new System.Drawing.Point(3, 180);
+            this.lblEntry.Location = new System.Drawing.Point(3, 183);
+            this.lblEntry.Multiline = true;
             this.lblEntry.Name = "lblEntry";
-            this.lblEntry.Size = new System.Drawing.Size(378, 181);
+            this.lblEntry.ReadOnly = true;
+            this.lblEntry.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.lblEntry.Size = new System.Drawing.Size(378, 175);
             this.lblEntry.TabIndex = 1;
             // 
             // FrmLogs
@@ -90,6 +91,7 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.FrmLogs_Load);
             this.tlpMain.ResumeLayout(false);
+            this.tlpMain.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -98,6 +100,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.MonthCalendar Calendar;
-        private System.Windows.Forms.Label lblEntry;
+        private System.Windows.Forms.TextBox lblEntry;
     }
 }
