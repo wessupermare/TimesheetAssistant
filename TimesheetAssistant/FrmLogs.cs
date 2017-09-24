@@ -46,14 +46,14 @@ namespace TimesheetAssistant
                 if (DateTime.Parse(entryPair.Key.Substring(entryPair.Key.IndexOf(';') + 1)) == date)
                 {
                     if (!projectTimes.ContainsKey(entryPair.Key)) projectTimes.Add(entryPair.Key, 0);
-                    foreach (TimeEntry entry in entryPair.Value) projectTimes[entryPair.Key] += (uint)entry.Duration.TotalMinutes;
+                    foreach (TimeEntry entry in entryPair.Value) projectTimes[entryPair.Key] += (uint)entry.Duration.TotalSeconds;
                 }
             }
 
             lblEntry.Text = "Time spent:\r\n";
             foreach (KeyValuePair<String, uint> pair in projectTimes)
             {
-                lblEntry.Text += $"\t{pair.Key.Substring(0, pair.Key.IndexOf(';'))}: {TimeSpan.FromMinutes(pair.Value).ToString().Remove(4, 3)}\r\n";
+                lblEntry.Text += $"\t{pair.Key.Substring(0, pair.Key.IndexOf(';'))}: {TimeSpan.FromSeconds(pair.Value).ToString()}\r\n";
             }
 
             Dictionary<string, Dictionary<TimeSpan, string>> logList = new Dictionary<string, Dictionary<TimeSpan, string>>();

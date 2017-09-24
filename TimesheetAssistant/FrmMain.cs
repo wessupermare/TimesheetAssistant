@@ -46,6 +46,7 @@ namespace TimesheetAssistant
                 frmSetup.ShowDialog();
             }
             Settings.Reload();
+            UpdateListbox();
         }
 
         private void BtnTime_Click(object sender, EventArgs e)
@@ -82,7 +83,7 @@ namespace TimesheetAssistant
             try
             {
                 tmpList = tmpDic[$"{ActiveProject};{DateTime.Today.Date}"];
-                tmpList.Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) });
+                tmpList.Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) });
                 tmpDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpList;
                 Settings.TimeSpent = tmpDic;
             }
@@ -90,7 +91,7 @@ namespace TimesheetAssistant
             {
                 try
                 {
-                    tmpList = new List<TimeEntry> { new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) } };
+                    tmpList = new List<TimeEntry> { new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) } };
                     tmpDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpList);
                     Settings.TimeSpent = tmpDic;
                 }
@@ -108,7 +109,7 @@ namespace TimesheetAssistant
             try
             {
                 tmpLogList = tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"];
-                tmpLogList.Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }));
+                tmpLogList.Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) }));
                 tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpLogList;
                 Settings.Logs = tmpLogDic;
             }
@@ -116,7 +117,7 @@ namespace TimesheetAssistant
             {
                 try
                 {
-                    tmpLogList = new List<Log> { new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }) };
+                    tmpLogList = new List<Log> { new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) }) };
                     tmpLogDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpLogList);
                     Settings.Logs = tmpLogDic;
                 }
@@ -128,7 +129,7 @@ namespace TimesheetAssistant
                             {
                                 new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry
                                 {
-                                    StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0))
+                                    StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0))
                                 }
                                 )
                             }
@@ -150,7 +151,7 @@ namespace TimesheetAssistant
             try
             {
                 tmpList = tmpDic[$"{ActiveProject};{DateTime.Today.Date}"];
-                tmpList.Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) });
+                tmpList.Add(new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) });
                 tmpDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpList;
                 Settings.TimeSpent = tmpDic;
             }
@@ -158,7 +159,7 @@ namespace TimesheetAssistant
             {
                 try
                 {
-                    tmpList = new List<TimeEntry> { new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) } };
+                    tmpList = new List<TimeEntry> { new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) } };
                     tmpDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpList);
                     Settings.TimeSpent = tmpDic;
                 }
@@ -176,7 +177,7 @@ namespace TimesheetAssistant
             try
             {
                 tmpLogList = tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"];
-                tmpLogList.Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }));
+                tmpLogList.Add(new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) }));
                 tmpLogDic[$"{ActiveProject};{DateTime.Today.Date}"] = tmpLogList;
                 Settings.Logs = tmpLogDic;
             }
@@ -184,7 +185,7 @@ namespace TimesheetAssistant
             {
                 try
                 {
-                    tmpLogList = new List<Log> { new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0)) }) };
+                    tmpLogList = new List<Log> { new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry { StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0)) }) };
                     tmpLogDic.Add($"{ActiveProject};{DateTime.Today.Date}", tmpLogList);
                     Settings.Logs = tmpLogDic;
                 }
@@ -196,7 +197,7 @@ namespace TimesheetAssistant
                             {
                                 new Log(Prompt.ShowDialog($"What have you done since {SessionStartTime.Hour}:{SessionStartTime.Minute}?", $"Log Entry For {DateTime.Now}"), ActiveProject, new TimeEntry
                                 {
-                                    StartTime = SessionStartTime, Duration = TimeSpan.FromMinutes((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalMinutes, 0))
+                                    StartTime = SessionStartTime, Duration = TimeSpan.FromSeconds((int)Math.Round(SessionEndTime.Subtract(SessionStartTime).TotalSeconds, 0))
                                 }
                                 )
                             }
@@ -220,6 +221,7 @@ namespace TimesheetAssistant
                 LbxProjects.Items.Add(proj);
             }
             LbxProjects.EndUpdate();
+            LbxProjects.SelectedIndex = 0;
         }
 
         private void BtnShowLogs_Click(object sender, EventArgs e)
